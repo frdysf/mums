@@ -37,11 +37,11 @@ DVD 2/KEYBOARDS/HARPSICHORD/HARPSICHORD 8 STOP,harpsichord,keyboard,acoustic,not
 DVD 2/PERCUSSION/GLOCKENSPIEL BRASS BEATER,glockenspiel,percussion,acoustic,note,
 DVD 2/PERCUSSION/CROTALES,crotales,percussion,acoustic,note,
 DVD 2/PERCUSSION/XYLOPHONE,xylophone,percussion,acoustic,note,
-DVD 2/PERCUSSION/TYMPANI,tympani,percussion,acoustic,ASSORTED,if ROLL sequence else note
+DVD 2/PERCUSSION/TYMPANI,tympani,percussion,acoustic,ASSORTED,if ROLL in filename sequence else note
 DVD 2/PERCUSSION/MARIMBA/MARIMBA SOFT MALLET,marimba,percussion,acoustic,note,
 DVD 2/PERCUSSION/MARIMBA/MARIMBA CRESCENDO ROLL,marimba,percussion,acoustic,sequence,
 DVD 2/PERCUSSION/MARIMBA/GRAND SYMPHONIC MARIMBA,marimba,percussion,acoustic,note,
-DVD 2/PERCUSSION/PERCUSSION METALS,percussion metal,percussion,acoustic,ASSORTED,"if (PATTERN, CHIMES, ROLL, SHAKE, TREE or WATERPHONE) sequence else note"
+DVD 2/PERCUSSION/PERCUSSION METALS,percussion metal,percussion,acoustic,ASSORTED,"if (PATTERN, CHIMES, ROLL, SHAKE, TREE or WATERPHONE in filename) sequence else note"
 DVD 2/PERCUSSION/VIBRAPHONE/VIBRAPHONE_SOFT MALLET,vibraphone,percussion,acoustic,note,
 DVD 2/PERCUSSION/VIBRAPHONE/VIBRAPHONE_HARD MALLET,vibraphone,percussion,acoustic,note,
 DVD 2/PERCUSSION/VIBRAPHONE/VIBRAPHONE_BOWED,vibraphone,percussion,acoustic,note,
@@ -49,7 +49,7 @@ DVD 2/PERCUSSION/TUBULAR BELLS,tubular bells,percussion,acoustic,note,
 DVD 2/PERCUSSION/STEEL DRUM/STEEL DRUM LOUD,steel drum,percussion,acoustic,note,
 DVD 2/PERCUSSION/STEEL DRUM/STEEL DRUM ROLLS,steel drum,percussion,acoustic,sequence,
 DVD 2/PERCUSSION/STEEL DRUM/STEEL DRUM SOFT,steel drum,percussion,acoustic,note,
-DVD 2/PERCUSSION/PERCUSSION SKINS,percussion skin,percussion,acoustic,ASSORTED,"if (PATTERN, ROLL or DOUBLE) sequence else note"
+DVD 2/PERCUSSION/PERCUSSION SKINS,percussion skin,percussion,acoustic,ASSORTED,"if (PATTERN, ROLL or DOUBLE in filename) sequence else note"
 DVD 3/STRINGS/VIOLINS/VIOLIN 1 NON VIBRATO,violin,string,acoustic,note,
 DVD 3/STRINGS/VIOLINS/VLN ENSEMBLE_HARMONICS-WET,violin,string,acoustic,note,
 DVD 3/STRINGS/VIOLINS/VIOLIN VIBRATO,violin,string,acoustic,note,
