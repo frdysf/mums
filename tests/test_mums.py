@@ -2,6 +2,9 @@ import pytest
 import re
 from src.mums import MUMS
 
+# Recommended: @pytest.mark.filterwarnings('ignore::UserWarning')
+# Or as pytest.ini: [pytest] filterwarnings = ignore::UserWarning
+
 @pytest.fixture
 def json_data():
     dataset = MUMS(root='/import/c4dm-datasets/MUMS/')
