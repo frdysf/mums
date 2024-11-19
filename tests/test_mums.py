@@ -2,8 +2,9 @@ import pytest
 import re
 from src.mums import MUMS
 
-# Recommended: @pytest.mark.filterwarnings('ignore::UserWarning')
-# Or as pytest.ini: [pytest] filterwarnings = ignore::UserWarning
+# Consider: @pytest.mark.filterwarnings('ignore::UserWarning')
+#   https://docs.pytest.org/en/7.1.x/how-to/capture-warnings.html#pytest-mark-filterwarnings
+#   Or as pytest.ini: [pytest] filterwarnings = ignore::UserWarning
 
 @pytest.fixture
 def json_data():
