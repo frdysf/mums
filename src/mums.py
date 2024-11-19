@@ -6,6 +6,7 @@ import re
 from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
+import scipy.io.wavfile
 
 class MUMS(data.Dataset):
     """ PyTorch dataset for MUMS.
@@ -142,35 +143,32 @@ class MUMS(data.Dataset):
     def __len__(self):
         return len(self.filenames)
     
-    #%%
     def __getitem__(self, idx) -> tuple[torch.Tensor, list, dict]:
-        pass
-        # TODO
-        # name = self.filenames[index]
-        # _, sample = scipy.io.wavfile.read(name)
-        # target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
-        # categorical_target = [
-        #     le.transform([target[field]])[0]
-        #     for field, le in zip(self.categorical_field_list, self.le)]
-        # if self.transform is not None:
-        #     sample = self.transform(sample)
-        # if self.target_transform is not None:
-        #     target = self.target_transform(target)
-        # return [sample, *categorical_target, target]
+        name = self.filenames[idx]
+        _, sample = scipy.io.wavfile.read(name)
+        target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
+        categorical_target = [
+            le.transform([target[field]])[0]
+            for field, le in zip(self.categorical_field_list, self.le)]
+        if self.transform is not None:
+            sample = self.transform(sample)
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+        return [sample, *categorical_target, target]
 
 if __name__ == "__main__":
-    import yaml
+    pass
+    # import yaml
 
-    with open('../../cosi/config/mums.yaml') as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
+    # with open('../../cosi/config/mums.yaml') as f:
+    #     config = yaml.load(f, Loader=yaml.FullLoader)
 
-    mums_dataset = MUMS(root=config['path']['mums'],
-        include_dirs=config['include_dirs'],
-        blacklist_pattern=config['blacklist_pattern'])
+    # mums_dataset = MUMS(root=config['path']['mums'],
+    #     include_dirs=config['include_dirs'],
+    #     blacklist_pattern=config['blacklist_pattern'])
 
-    mums_dataset.json_data
+    # mums_dataset.json_data
 
-    # TODO
     # # audio samples are loaded as an int16 numpy array
     # # rescale intensity range as float [-1, 1]
     # toFloat = transforms.Lambda(lambda x: x / np.iinfo(np.int16).max)
