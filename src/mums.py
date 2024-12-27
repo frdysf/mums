@@ -25,10 +25,10 @@ class MUMS(data.Dataset):
             together with its metadata is removed from the dataset. Case-insensitive.
     """
 
-    def __init__(self, root, transform=None, target_transform=None,
-                 include_dirs=[],
-                 blacklist_pattern=[],
-                 categorical_field_list=['instrument_name_str', 'instrument_family_str']):
+    def __init__(self, root : str, transform : callable = None, target_transform : callable = None,
+                 include_dirs : list[str] = [],
+                 blacklist_pattern : list[str] = [],
+                 categorical_field_list : list[str] =['instrument_name_str', 'instrument_family_str']):
         
         assert(isinstance(root, str))
         assert(isinstance(include_dirs, list))
