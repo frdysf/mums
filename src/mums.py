@@ -37,8 +37,8 @@ class MUMS(data.Dataset):
         self.root = root
         self.include_dirs = include_dirs
 
-        PATH_DIRECTORIES = './src/dirs.csv'  # csv file listing bottom-level directories
-        df_directories = pd.read_csv(PATH_DIRECTORIES)
+        PATH_CSV = './src/dirs.csv'  # csv file listing bottom-level directories
+        df_directories = pd.read_csv(PATH_CSV)
         
         if self.include_dirs:    # otherwise include all directories by default
             df_directories = df_directories[df_directories['subpath'].isin(self.include_dirs)]
@@ -144,6 +144,8 @@ class MUMS(data.Dataset):
         return len(self.filenames)
     
     def __getitem__(self, idx) -> tuple[torch.Tensor, list, dict]:
+        # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
+        # https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
         name = self.filenames[idx]
         _, sample = scipy.io.wavfile.read(name)
         target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
