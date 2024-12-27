@@ -7,6 +7,7 @@ from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
 import scipy.io.wavfile
+from typing import Optional
 
 class MUMS(data.Dataset):
     """ PyTorch dataset for MUMS.
@@ -25,14 +26,11 @@ class MUMS(data.Dataset):
             together with its metadata is removed from the dataset. Case-insensitive.
     """
 
-    def __init__(self, root : str, transform : callable = None, target_transform : callable = None,
-                 include_dirs : list[str] = [],
-                 blacklist_pattern : list[str] = [],
-                 categorical_field_list : list[str] =['instrument_name_str', 'instrument_family_str']):
-        
-        assert(isinstance(root, str))
-        assert(isinstance(include_dirs, list))
-        assert(isinstance(blacklist_pattern, list))
+    def __init__(self, root : str,
+                 include_dirs : list[str] = [], blacklist_pattern : list[str] = [],
+                 transform : Optional[callable] = None, target_transform : Optional[callable] = None,
+                 categorical_field_list : list[str] = ['instrument_name_str', 'instrument_family_str']
+                 ):
 
         self.root = root
         self.include_dirs = include_dirs
