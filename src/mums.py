@@ -1,4 +1,4 @@
-import torch
+from torch import Tensor
 import torch.utils.data as data
 import pandas as pd
 import os
@@ -6,7 +6,7 @@ import re
 from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
-import scipy.io.wavfile
+import torchaudio
 from typing import Optional, Dict, Union
 
 class MUMS(data.Dataset):
@@ -141,11 +141,12 @@ class MUMS(data.Dataset):
     def __len__(self):
         return len(self.filenames)
     
-    def __getitem__(self, idx) -> tuple[torch.Tensor, list, Dict[str, Union[str, int]]]:
+    def __getitem__(self, idx) -> tuple[Tensor, list, Dict[str, Union[str, int]]]:
         # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
-        # https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
+        #       https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
+        # TODO: handling stereo data?
         name = self.filenames[idx]
-        _, sample = scipy.io.wavfile.read(name)
+        sample, sr = torchaudio.load(name)
         target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
         categorical_target = [
             le.transform([target[field]])[0]
