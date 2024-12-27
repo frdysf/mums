@@ -6,7 +6,7 @@ import re
 from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
-import torchaudio
+import torchaudio.load
 from typing import Optional, Dict, Union
 
 class MUMS(data.Dataset):
