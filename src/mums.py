@@ -7,7 +7,7 @@ from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
 import scipy.io.wavfile
-from typing import Optional
+from typing import Optional, Dict, Union
 
 class MUMS(data.Dataset):
     """ PyTorch dataset for MUMS.
@@ -141,7 +141,7 @@ class MUMS(data.Dataset):
     def __len__(self):
         return len(self.filenames)
     
-    def __getitem__(self, idx) -> tuple[torch.Tensor, list, dict]:
+    def __getitem__(self, idx) -> tuple[torch.Tensor, list, Dict[str, Union[str, int]]]:
         # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
         # https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
         name = self.filenames[idx]
