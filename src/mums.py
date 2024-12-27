@@ -144,7 +144,6 @@ class MUMS(data.Dataset):
     def __getitem__(self, idx) -> tuple[Tensor, list, Dict[str, Union[str, int]]]:
         # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
         #       https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
-        # TODO: handling stereo data?
         name = self.filenames[idx]
         sample, sr = torchaudio.load(name)
         target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
