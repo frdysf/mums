@@ -130,11 +130,11 @@ class MUMS(data.Dataset):
                     self.json_data[path_f] = targets_f
 
         self.categorical_field_list = categorical_field_list
-        self.le = []
+        self.label_encoders = []  # NB: renamed from self.le in pytorch-nsynth  
         for i, field in enumerate(self.categorical_field_list):
-            self.le.append(LabelEncoder())
+            self.label_encoders.append(LabelEncoder())
             field_values = [value[field] for value in self.json_data.values()]
-            self.le[i].fit(field_values)
+            self.label_encoders[i].fit(field_values)
 
         self.transform = transform
         self.target_transform = target_transform
@@ -151,7 +151,7 @@ class MUMS(data.Dataset):
         target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
         categorical_target = [
             le.transform([target[field]])[0]
-            for field, le in zip(self.categorical_field_list, self.le)]
+            for field, le in zip(self.categorical_field_list, self.label_encoders)]
         if self.transform is not None:
             sample = self.transform(sample)
         if self.target_transform is not None:
