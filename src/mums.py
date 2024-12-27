@@ -11,7 +11,7 @@ from typing import Optional
 
 class MUMS(data.Dataset):
     """ PyTorch dataset for MUMS.
-        Inspired by pytorch-nsynth: https://github.com/kwon-young/pytorch-nsynth
+        Adapted from pytorch-nsynth: https://github.com/kwon-young/pytorch-nsynth
     
     Args:
         root (string): Root directory of dataset.
