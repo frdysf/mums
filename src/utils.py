@@ -2,8 +2,8 @@ import itertools as it
 
 def str2midi(note_string : str) -> int:
   """
-  Source: https://pythonhosted.org/audiolazy/_modules/audiolazy/lazy_midi.html#str2midi
   Given a note string name (e.g. "Bb4"), returns its MIDI pitch number.
+      https://pythonhosted.org/audiolazy/_modules/audiolazy/lazy_midi.html#str2midi
 
   Args:
     note_string (str): Note string name, e.g. "Bb4".
