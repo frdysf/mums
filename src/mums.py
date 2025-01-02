@@ -8,6 +8,7 @@ from warnings import warn
 from sklearn.preprocessing import LabelEncoder
 import torchaudio.load
 from typing import Optional, Dict, Union
+from pathlib import Path
 
 class MUMS(data.Dataset):
     """ PyTorch dataset for MUMS.
@@ -35,7 +36,7 @@ class MUMS(data.Dataset):
         self.root = root
         self.include_dirs = include_dirs
 
-        PATH_CSV = './src/dirs.csv'  # csv file listing (mostly) bottom-level directories
+        PATH_CSV = Path('./src/dirs.csv')  # csv file listing (mostly) bottom-level directories
         df_directories = pd.read_csv(PATH_CSV)
         
         if self.include_dirs:    # otherwise include all directories by default
