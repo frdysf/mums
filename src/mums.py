@@ -36,8 +36,8 @@ class MUMS(data.Dataset):
         self.root = root
         self.include_dirs = include_dirs
 
-        PATH_CSV = Path('./src/dirs.csv')  # csv file listing (mostly) bottom-level directories
-        df_directories = pd.read_csv(PATH_CSV)
+        META_CSV = Path('./src/dirs.csv')  # csv file listing (mostly) bottom-level directories
+        df_directories = pd.read_csv(META_CSV)
         
         if self.include_dirs:    # otherwise include all directories by default
             df_directories = df_directories[df_directories['subpath'].isin(self.include_dirs)]
