@@ -7,7 +7,7 @@ from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
 import torchaudio.load
-from typing import Optional, Dict, Union
+from typing import Sequence, Optional, Any
 from pathlib import Path
 
 class MUMS(data.Dataset):
@@ -28,9 +28,9 @@ class MUMS(data.Dataset):
     """
 
     def __init__(self, root : str,
-                 include_dirs : list[str] = [], blacklist_pattern : list[str] = [],
+                 include_dirs : Sequence[str] = [], blacklist_pattern : Sequence[str] = [],
                  transform : Optional[callable] = None, target_transform : Optional[callable] = None,
-                 categorical_field_list : list[str] = ['instrument_name_str', 'instrument_family_str']
+                 categorical_field_list : Sequence[str] = ['instrument_name_str', 'instrument_family_str']
                  ):
 
         self.root = root
@@ -142,7 +142,7 @@ class MUMS(data.Dataset):
     def __len__(self):
         return len(self.filenames)
     
-    def __getitem__(self, idx) -> tuple[Tensor, list, Dict[str, Union[str, int]]]:
+    def __getitem__(self, idx) -> tuple[Tensor, list, dict[str, Any]]:
         # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
         #       https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
         name = self.filenames[idx]
