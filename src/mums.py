@@ -148,7 +148,7 @@ class MUMS(data.Dataset):
         name = self.filenames[idx]
         sample, sr = sf.read(name)
         sample = from_numpy(sample)
-        target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
+        target = self.json_data[name]
         categorical_target = [
             le.transform([target[field]])[0]
             for field, le in zip(self.categorical_field_list, self.label_encoders)]
@@ -157,35 +157,6 @@ class MUMS(data.Dataset):
         if self.target_transform is not None:
             target = self.target_transform(target)
         return [sample, *categorical_target, target]
-
-if __name__ == "__main__":
-    pass
-    # import yaml
-
-    # with open('../../cosi/config/mums.yaml') as f:
-    #     config = yaml.load(f, Loader=yaml.FullLoader)
-
-    # mums_dataset = MUMS(root=config['path']['mums'],
-    #     include_dirs=config['include_dirs'],
-    #     blacklist_pattern=config['blacklist_pattern'])
-
-    # mums_dataset.json_data
-
-    # # audio samples are loaded as an int16 numpy array
-    # # rescale intensity range as float [-1, 1]
-    # toFloat = transforms.Lambda(lambda x: x / np.iinfo(np.int16).max)
-    # # use instrument_family and instrument_source as classification targets
-    # dataset = NSynth(
-    #     "../nsynth-test",
-    #     transform=toFloat,
-    #     blacklist_pattern=["string"],  # blacklist string instrument
-    #     categorical_field_list=["instrument_family", "instrument_source"])
-    # loader = data.DataLoader(dataset, batch_size=32, shuffle=True)
-    # for samples, instrument_family_target, instrument_source_target, targets \
-    #         in loader:
-    #     print(samples.shape, instrument_family_target.shape,
-    #           instrument_source_target.shape)
-    #     print(torch.min(samples), torch.max(samples))
 
 
 
