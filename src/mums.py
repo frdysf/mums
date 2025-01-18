@@ -1,4 +1,4 @@
-from torch import Tensor
+from torch import Tensor, from_numpy
 import torch.utils.data as data
 import pandas as pd
 import os
@@ -6,7 +6,7 @@ import re
 from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
-import torchaudio.load
+import soundfile as sf
 from typing import Sequence, Optional, Any
 from pathlib import Path
 
@@ -146,7 +146,8 @@ class MUMS(data.Dataset):
         # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
         #       https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
         name = self.filenames[idx]
-        sample, sr = torchaudio.load(name)
+        sample, sr = sf.read(name)
+        sample = from_numpy(sample)
         target = self.json_data[os.path.splitext(os.path.basename(name))[0]]
         categorical_target = [
             le.transform([target[field]])[0]
