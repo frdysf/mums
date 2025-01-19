@@ -5,6 +5,4 @@
 
 PyTorch Dataset class for the MUMS (Opolko & Wapnick, 2006) dataset. Adapted from [pytorch-nsynth](https://github.com/kwon-young/pytorch-nsynth).
 
-95% complete. Need to uncomment and test main in src/mums.py with a Dataloader.
-
-Check back later for a proper README!
+Seems working. Check back later for a proper README!
