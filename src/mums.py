@@ -21,7 +21,7 @@ class MUMS(data.Dataset):
         target_transform (callable, optional): A function/transform that takes in the
             target and transforms it.
         include_dirs (list): List of bottom-level directories to include in the dataset.
-            If empty, all bottom-level directories are included. Refer to directories.csv.
+            If empty, all bottom-level directories are included. Refer to dirs.csv.
         blacklist_pattern (list): List of strings used to blacklist dataset elements.
             If one of the strings is present in the audio filename, this sample
             together with its metadata is removed from the dataset. Case-insensitive.
