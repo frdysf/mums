@@ -142,8 +142,6 @@ class MUMS(data.Dataset):
         return len(self.filenames)
     
     def __getitem__(self, idx) -> tuple[Tensor, list, dict[str, Any]]:
-        # TODO: audio files aren't same length so need to adjust duration somewhere - transforms arg?
-        #       https://iver56.github.io/audiomentations/waveform_transforms/adjust_duration/
         name = self.filenames[idx]
         sample, sr = sf.read(name)
         sample = from_numpy(sample)
