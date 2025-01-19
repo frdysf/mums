@@ -35,6 +35,8 @@ class MUMS(data.Dataset):
 
         self.root = root
         self.include_dirs = include_dirs
+        self.transform = transform
+        self.target_transform = target_transform
 
         META_CSV = Path('./src/dirs.csv')  # csv file listing (mostly) bottom-level directories
         df_directories = pd.read_csv(META_CSV)
@@ -135,8 +137,6 @@ class MUMS(data.Dataset):
             field_values = [value[field] for value in self.json_data.values()]
             self.label_encoders[i].fit(field_values)
 
-        self.transform = transform
-        self.target_transform = target_transform
         return
     
     def __len__(self):
