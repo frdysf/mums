@@ -73,60 +73,59 @@ class MUMS(data.Dataset):
                                   'instrument_source_str': instrument_source_str,
                                   'type_str': type_str}
 
-                    match type_str:
-                        case 'note':
-                            pitch_height_str = re.search(r'[A-Ga-g]#?\d', f)
+                    if type_str == 'note':
+                        pitch_height_str = re.search(r'[A-Ga-g]#?\d', f)
 
-                            if pitch_height_str is not None:
-                                pitch_height_str = pitch_height_str.group(0).upper()
-                                pitch_class_str = re.search(r'[A-Ga-g]#?', pitch_height_str).group(0)
-                                pitch = str2midi(pitch_height_str)
+                        if pitch_height_str is not None:
+                            pitch_height_str = pitch_height_str.group(0).upper()
+                            pitch_class_str = re.search(r'[A-Ga-g]#?', pitch_height_str).group(0)
+                            pitch = str2midi(pitch_height_str)
 
+                        else:
+                            warn(f"Pitch height not found in or extracted from {f}")
+                            pitch_height_str = None
+                            warn(f"Pitch class not found in or extracted from {f}")
+                            pitch_class_str = None
+                            warn(f"Pitch not found in or extracted from {f}")
+                            pitch = None
+                            
+                        targets_f['pitch_height_str'] = pitch_height_str
+                        targets_f['pitch_class_str'] = pitch_class_str
+                        targets_f['pitch'] = pitch
+
+                    elif type_str == 'chord':
+                        if 'ELECTRIC GUITAR' in path_f:
+                            pitch_class_str = re.search(r'_[A-Ga-g]#?', f).group(0)
+                            targets_f['root_pitch_class_str'] = pitch_class_str[1:]  # remove underscore
+
+                            chord_quality_str = re.search(r'GUITAR( |_)[A-Z](( ?(([A-Z0-9]+)?))+)?', path_dir).group(0)[7:]   # remove leading 'GUITAR'
+                            if re.match(r'[A-Z](( ?(([A-Z0-9]+)?))+)?S$', chord_quality_str):
+                                chord_quality_str = chord_quality_str[:-1]  # remove trailing 'S'
+                            elif re.match(r'[A-Z](( ?(([A-Z0-9]+)?))+)? STOPPED', chord_quality_str):
+                                chord_quality_str = chord_quality_str[:-8]  # remove trailing ' STOPPED'
+
+                            targets_f['chord_quality_str'] = chord_quality_str  # default case
+
+                        elif 'ACCORDION' in path_f:
+                            pitch_class_str = re.search(r' [A-Ga-g]#? [A-Z]+', f).group(0)
+                            if 'FLAT' in pitch_class_str:
+                                targets_f['root_pitch_class_str'] = f'{pitch_class_str[1:2]}b'  # use b symbol
+                                chord_quality_str = re.search(r' [A-Ga-g]#? [A-Z]+ ?([A-Z]+)? ?([A-Z0-9]+)?', f).group(0)[8:]   # remove leading pitch char and 'FLAT'
+
+                            elif '#' in pitch_class_str:
+                                targets_f['root_pitch_class_str'] = pitch_class_str[1:3]  # remove trailing word
+                                chord_quality_str = re.search(r' [A-Ga-g]#? [A-Z]+ ?([A-Z]+)? ?([A-Z0-9]+)?', f).group(0)[4:]   # remove leading pitch char and '#'
                             else:
-                                warn(f"Pitch height not found in or extracted from {f}")
-                                pitch_height_str = None
-                                warn(f"Pitch class not found in or extracted from {f}")
-                                pitch_class_str = None
-                                warn(f"Pitch not found in or extracted from {f}")
-                                pitch = None
-                                
-                            targets_f['pitch_height_str'] = pitch_height_str
-                            targets_f['pitch_class_str'] = pitch_class_str
-                            targets_f['pitch'] = pitch
+                                targets_f['root_pitch_class_str'] = pitch_class_str[1:2]  # remove trailing word
+                                chord_quality_str = re.search(r' [A-Ga-g]#? [A-Z]+ ?([A-Z]+)? ?([A-Z0-9]+)?', f).group(0)[3:]   # remove leading pitch char
 
-                        case 'chord':
-                            if 'ELECTRIC GUITAR' in path_f:
-                                pitch_class_str = re.search(r'_[A-Ga-g]#?', f).group(0)
-                                targets_f['root_pitch_class_str'] = pitch_class_str[1:]  # remove underscore
+                            targets_f['chord_quality_str'] = chord_quality_str
 
-                                chord_quality_str = re.search(r'GUITAR( |_)[A-Z](( ?(([A-Z0-9]+)?))+)?', path_dir).group(0)[7:]   # remove leading 'GUITAR'
-                                if re.match(r'[A-Z](( ?(([A-Z0-9]+)?))+)?S$', chord_quality_str):
-                                    chord_quality_str = chord_quality_str[:-1]  # remove trailing 'S'
-                                elif re.match(r'[A-Z](( ?(([A-Z0-9]+)?))+)? STOPPED', chord_quality_str):
-                                    chord_quality_str = chord_quality_str[:-8]  # remove trailing ' STOPPED'
-
-                                targets_f['chord_quality_str'] = chord_quality_str  # default case
-
-                            elif 'ACCORDION' in path_f:
-                                pitch_class_str = re.search(r' [A-Ga-g]#? [A-Z]+', f).group(0)
-                                if 'FLAT' in pitch_class_str:
-                                    targets_f['root_pitch_class_str'] = f'{pitch_class_str[1:2]}b'  # use b symbol
-                                    chord_quality_str = re.search(r' [A-Ga-g]#? [A-Z]+ ?([A-Z]+)? ?([A-Z0-9]+)?', f).group(0)[8:]   # remove leading pitch char and 'FLAT'
-
-                                elif '#' in pitch_class_str:
-                                    targets_f['root_pitch_class_str'] = pitch_class_str[1:3]  # remove trailing word
-                                    chord_quality_str = re.search(r' [A-Ga-g]#? [A-Z]+ ?([A-Z]+)? ?([A-Z0-9]+)?', f).group(0)[4:]   # remove leading pitch char and '#'
-                                else:
-                                    targets_f['root_pitch_class_str'] = pitch_class_str[1:2]  # remove trailing word
-                                    chord_quality_str = re.search(r' [A-Ga-g]#? [A-Z]+ ?([A-Z]+)? ?([A-Z0-9]+)?', f).group(0)[3:]   # remove leading pitch char
-
-                                targets_f['chord_quality_str'] = chord_quality_str
-
-                            elif 'ORGAN' in path_f:
-                                warn(f"No pitch class for {f}")
-                                targets_f['root_pitch_class_str'] = None
-                                warn(f"No chord quality for {f}")
-                                targets_f['chord_quality_str'] = None
+                        elif 'ORGAN' in path_f:
+                            warn(f"No pitch class for {f}")
+                            targets_f['root_pitch_class_str'] = None
+                            warn(f"No chord quality for {f}")
+                            targets_f['chord_quality_str'] = None
 
                     self.json_data[path_f] = targets_f
 
