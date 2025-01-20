@@ -38,8 +38,8 @@ class MUMS(data.Dataset):
         self.transform = transform
         self.target_transform = target_transform
 
-        BASE_DIR = Path(__file__).resolve().parent.parent  # pytorch-mums/
-        META_CSV = os.path.join(BASE_DIR, 'pytorch_mums/dirs.csv')  # csv file listing (mostly) bottom-level directories
+        SRC_DIR = Path(__file__).resolve().parent  # pytorch-mums/pytorch_mums
+        META_CSV = os.path.join(SRC_DIR, 'dirs.csv')  # csv file listing (mostly) bottom-level directories
         df_directories = pd.read_csv(META_CSV)
         
         if self.include_dirs:    # otherwise include all directories by default
