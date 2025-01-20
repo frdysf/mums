@@ -10,4 +10,4 @@ include_dirs:
 
 blacklist_pattern:
 - trumpet
-- A3
+- 'A3'
