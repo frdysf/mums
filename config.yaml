@@ -9,5 +9,5 @@ include_dirs:
 - DVD 3/WOODWINDS/HISTORICAL WIND INSTRUMENTS/OBOES/BAROQUE OBOE (with flattement) 
 
 blacklist_pattern:
-- trumpet
-- 'A3'
+- vibrato
+- harmonics
