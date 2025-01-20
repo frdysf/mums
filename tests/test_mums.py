@@ -1,6 +1,6 @@
 import pytest
 import re
-from src.mums import MUMS
+from pytorch_mums.mums import MUMS
 
 # Consider: @pytest.mark.filterwarnings('ignore::UserWarning')
 #   https://docs.pytest.org/en/7.1.x/how-to/capture-warnings.html#pytest-mark-filterwarnings
