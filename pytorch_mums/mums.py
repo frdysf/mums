@@ -10,10 +10,12 @@ import soundfile as sf
 from typing import Sequence, Optional, Any
 from pathlib import Path
 
+
 class MUMS(data.Dataset):
     """ PyTorch dataset for MUMS.
-        Adapted from pytorch-nsynth: https://github.com/kwon-young/pytorch-nsynth
-    
+        Adapted from pytorch-nsynth:
+            https://github.com/kwon-young/pytorch-nsynth
+
     Args:
         root (string): Root directory of dataset.
         transform (callable, optional): A function/transform that takes in
@@ -27,10 +29,12 @@ class MUMS(data.Dataset):
             together with its metadata is removed from the dataset. Case-insensitive.
     """
 
-    def __init__(self, root : str,
-                 include_dirs : Sequence[str] = [], blacklist_pattern : Sequence[str] = [],
-                 transform : Optional[callable] = None, target_transform : Optional[callable] = None,
-                 categorical_field_list : Sequence[str] = ['instrument_name_str', 'instrument_family_str']
+    def __init__(self, root: str,
+                 include_dirs: Sequence[str] = [],
+                 blacklist_pattern: Sequence[str] = [],
+                 transform: Optional[callable] = None,
+                 target_transform: Optional[callable] = None,
+                 categorical_field_list: Sequence[str] = ['instrument_name_str', 'instrument_family_str']
                  ):
 
         self.root = root
@@ -39,16 +43,18 @@ class MUMS(data.Dataset):
         self.target_transform = target_transform
 
         SRC_DIR = Path(__file__).resolve().parent  # ..
-        META_CSV = os.path.join(SRC_DIR, 'dirs.csv')  # csv file listing (mostly) bottom-level directories
+        META_CSV = os.path.join(SRC_DIR, 'dirs.csv')  # lists (mostly) bottom-level directories
         df_directories = pd.read_csv(META_CSV)
-        
-        if self.include_dirs:    # otherwise include all directories by default
-            df_directories = df_directories[df_directories['subpath'].isin(self.include_dirs)]
-    
-        self.filenames = []
-        self.json_data = {} # metadata
 
-        blacklist = lambda x: any(re.search(pattern, x, re.IGNORECASE) for pattern in blacklist_pattern)
+        if self.include_dirs:    # otherwise include all directories by default
+            df_directories = \
+                df_directories[df_directories['subpath'].isin(self.include_dirs)]
+
+        self.filenames = []
+        self.json_data = {}  # metadata
+
+        blacklist = lambda x: any(re.search(pattern, x, re.IGNORECASE)
+                              for pattern in blacklist_pattern)
 
         for index, row in df_directories.iterrows():
             path_dir = os.path.join(self.root, row['subpath'])
@@ -70,9 +76,9 @@ class MUMS(data.Dataset):
                     self.filenames.append(path_f)
 
                     targets_f = {'instrument_name_str': instrument_name_str,
-                                  'instrument_family_str': instrument_family_str,
-                                  'instrument_source_str': instrument_source_str,
-                                  'type_str': type_str}
+                                 'instrument_family_str': instrument_family_str,
+                                 'instrument_source_str': instrument_source_str,
+                                 'type_str': type_str}
 
                     if type_str == 'note':
                         pitch_height_str = re.search(r'[A-Ga-g]#?\d', f)
@@ -89,7 +95,7 @@ class MUMS(data.Dataset):
                             pitch_class_str = None
                             warn(f"Pitch not found in or extracted from {f}")
                             pitch = None
-                            
+
                         targets_f['pitch_height_str'] = pitch_height_str
                         targets_f['pitch_class_str'] = pitch_class_str
                         targets_f['pitch'] = pitch
@@ -131,17 +137,17 @@ class MUMS(data.Dataset):
                     self.json_data[path_f] = targets_f
 
         self.categorical_field_list = categorical_field_list
-        self.label_encoders = []  # NB: renamed from self.le in pytorch-nsynth  
+        self.label_encoders = []  # NB: renamed from self.le in pytorch-nsynth
         for i, field in enumerate(self.categorical_field_list):
             self.label_encoders.append(LabelEncoder())
             field_values = [value[field] for value in self.json_data.values()]
             self.label_encoders[i].fit(field_values)
 
         return
-    
+
     def __len__(self):
         return len(self.filenames)
-    
+
     def __getitem__(self, idx) -> tuple[Tensor, list, dict[str, Any]]:
         name = self.filenames[idx]
         sample, sr = sf.read(name)
@@ -155,6 +161,3 @@ class MUMS(data.Dataset):
         if self.target_transform is not None:
             target = self.target_transform(target)
         return [sample, *categorical_target, target]
-
-
-
