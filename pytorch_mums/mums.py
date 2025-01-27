@@ -7,7 +7,7 @@ from .utils import str2midi
 from warnings import warn
 from sklearn.preprocessing import LabelEncoder
 import soundfile as sf
-from typing import Sequence, Optional, Any
+from typing import Sequence, Optional
 from pathlib import Path
 
 
@@ -148,7 +148,7 @@ class MUMS(data.Dataset):
     def __len__(self):
         return len(self.filenames)
 
-    def __getitem__(self, idx) -> tuple[Tensor, list, dict[str, Any]]:
+    def __getitem__(self, idx) -> tuple[Tensor, list, dict[str, str | int]]:
         name = self.filenames[idx]
         sample, sr = sf.read(name)
         sample = from_numpy(sample)
