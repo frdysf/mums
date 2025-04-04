@@ -17,14 +17,14 @@ class MUMS(data.Dataset):
             https://github.com/kwon-young/pytorch-nsynth
 
     Args:
-        root (string): Root directory of dataset.
-        transform (callable, optional): A function/transform that takes in
+        root: Root directory of dataset.
+        transform: A function/transform that takes in
                 a sample and returns a transformed version.
-        target_transform (callable, optional): A function/transform that takes in the
-            target and transforms it.
-        include_dirs (list): List of bottom-level directories to include in the dataset.
+        target_transform: A function/transform that takes in the
+            target and transforms it.  # TODO: need to adapt for multiple targets?
+        include_dirs: List of bottom-level directories to include in the dataset.
             If empty, all bottom-level directories are included. Refer to dirs.csv.
-        blacklist_pattern (list): List of strings used to blacklist dataset elements.
+        blacklist_pattern: List of strings used to blacklist dataset elements.
             If one of the strings is present in the audio filename, this sample
             together with its metadata is removed from the dataset. Case-insensitive.
     """
