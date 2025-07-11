@@ -1,4 +1,4 @@
-path: '/import/c4dm-datasets/MUMS/'
+root: '/import/c4dm-datasets/MUMS/'
 
 include_dirs:
 - DVD 1/BRASS/TRUMPETS/TRUMPET IN C_HARMON MUTE
